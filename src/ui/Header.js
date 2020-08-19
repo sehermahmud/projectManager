@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   root: {
-    zIndex: theme.zIndex.modal + 1,
     background: theme.background,
     border: 0,
     fontSize: 16,

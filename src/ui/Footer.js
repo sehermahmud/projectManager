@@ -5,7 +5,6 @@ const useStyles = makeStyles(theme => ({
   footer: {
     background: "linear-gradient(45deg, #7c4dff 20%, #ec407a 60%, #2979ff 90% )",
     width: "100%",
-    zIndex: 1302,
     position: "relative"
   },
   adornment: {
