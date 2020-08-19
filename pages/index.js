@@ -8,14 +8,6 @@ import AddIcon from "@material-ui/icons/Add";
 import Switch from "@material-ui/core/Switch";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableHead from "@material-ui/core/TableHead";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-import Paper from "@material-ui/core/Paper";
-import FilterListIcon from "@material-ui/icons/FilterList";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import {
@@ -83,173 +75,7 @@ function createData(
 export default function ProjectManager() {
   const classes = useStyles();
   const theme = useTheme();
-  const [rows, setRows] = useState([
-    createData(
-      "Seher Mahmud",
-      "8/17/2020",
-      "Website",
-      "Interactive",
-      "N/A",
-      "N/A",
-      "N/A",
-      "$100",
-      true
-    ),
-    createData(
-      "Safin Mahmud",
-      "8/16/2020",
-      "Website",
-      "Basic",
-      "N/A",
-      "N/A",
-      "N/A",
-      "$60",
-      true
-    ),
-    createData(
-      "MD. Dulal Mahmud",
-      "8/16/2020",
-      "iOS/Android App",
-      "Photo/Video, File Transfer, Biometrics, and Push Notifications",
-      "medium complexity",
-      "iOS",
-      "10-100",
-      "$281.25",
-      true
-    ),
-    createData(
-      "Sadia Saima Islam",
-      "8/16/2020",
-      "Custom Software",
-      "Photo/Video, File Transfer, and Push Notifications",
-      "medium complexity",
-      "Web",
-      "10-100",
-      "$156.25",
-      true
-    ),
-    createData(
-      "zizali",
-      "8/18/2020",
-      "Custom Software",
-      "Photo/Video, File Transfer, and Push Notifications",
-      "medium complexity",
-      "Web",
-      "10-100",
-      "$156.25",
-      true
-    ),
-    createData(
-      "Kai",
-      "8/18/2020",
-      "Custom Software",
-      "Photo/Video, File Transfer, and Push Notifications",
-      "medium complexity",
-      "Web",
-      "10-100",
-      "$156.25",
-      true
-    ),
-    createData(
-      "sanena",
-      "8/18/2020",
-      "Custom Software",
-      "Photo/Video, File Transfer, and Push Notifications",
-      "medium complexity",
-      "Web",
-      "10-100",
-      "$156.250",
-      true
-    ),
-    createData(
-      "beark",
-      "8/18/2020",
-      "Custom Software",
-      "Photo/Video, File Transfer, and Push Notifications",
-      "medium complexity",
-      "Web",
-      "10-100",
-      "$156.25",
-      true
-    ),
-    createData(
-      "Hari",
-      "8/18/2020",
-      "Custom Software",
-      "Photo/Video, File Transfer, and Push Notifications",
-      "medium complexity",
-      "Web",
-      "10-100",
-      "$180.00",
-      true
-    ),
-    createData(
-      "Kanlim",
-      "8/18/2020",
-      "Custom Software",
-      "Photo/Video, File Transfer, and Push Notifications",
-      "medium complexity",
-      "Web",
-      "10-100",
-      "$180.00",
-      true
-    ),
-    createData(
-      "Nina",
-      "8/18/2020",
-      "Custom Software",
-      "Photo/Video, File Transfer, and Push Notifications",
-      "medium complexity",
-      "Web",
-      "10-100",
-      "$180.00",
-      true
-    ),
-    createData(
-      "Icihgo",
-      "8/18/2020",
-      "Custom Software",
-      "Photo/Video, File Transfer, and Push Notifications",
-      "medium complexity",
-      "Web",
-      "10-100",
-      "$180.00",
-      true
-    ),
-    createData(
-      "Max",
-      "8/18/2020",
-      "Custom Software",
-      "Photo/Video, File Transfer, and Push Notifications",
-      "medium complexity",
-      "Web",
-      "10-100",
-      "$180.00",
-      true
-    ),
-    createData(
-      "Zoey",
-      "8/18/2020",
-      "Custom Software",
-      "Photo/Video, File Transfer, and Push Notifications",
-      "medium complexity",
-      "Web",
-      "10-100",
-      "$180.00",
-      true
-    ),
-    createData(
-      "Yuki",
-      "8/18/2020",
-      "Custom Software",
-      "Photo/Video, File Transfer, and Push Notifications",
-      "medium complexity",
-      "Web",
-      "10-100",
-      "$180.00",
-      true
-    ),
-  ]);
+  const [rows, setRows] = useState([]);
 
   const platformOptions = ["Web", "iOS", "Android"];
   var featureOptions = [
@@ -279,7 +105,6 @@ export default function ProjectManager() {
   const [page, setPage] = React.useState(0);
   const matchesMD = useMediaQuery(theme.breakpoints.down("md"));
   const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
-  const matchesXS = useMediaQuery(theme.breakpoints.down("xs"));
 
   const addProject = () => {
     setRows([
