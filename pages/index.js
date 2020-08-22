@@ -113,7 +113,7 @@ export default function ProjectManager() {
       ...rows,
       axios
         .post(
-          "http://localhost:5000/api/places/project",
+          "https://projectmanagerbackend.herokuapp.com/api/places/project",
           createData(
             name,
             format(date, "MM/dd/yy"),
