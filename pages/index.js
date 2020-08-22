@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, useTheme } from "@material-ui/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import AddIcon from "@material-ui/icons/Add";
@@ -19,11 +19,13 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import { Button } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 import { format } from "date-fns";
 import EnhancedTable from "../src/ui/EnhancedTable";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Hidden from "@material-ui/core/Hidden";
+
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   service: {
@@ -109,27 +111,33 @@ export default function ProjectManager() {
   const addProject = () => {
     setRows([
       ...rows,
-      createData(
-        name,
-        format(date, "MM/dd/yy"),
-        service,
-        features.join(", "),
-        service === "Website" ? "N/A" : complexity,
-        service === "Website" ? "N/A" : platforms.join(", "),
-        service === "Website" ? "N/A" : users,
-        `$${total}`,
-        true
-      ),
+      axios
+        .post(
+          "http://localhost:5000/api/places/project",
+          createData(
+            name,
+            format(date, "MM/dd/yy"),
+            service,
+            features.join(", "),
+            complexity,
+            platforms.join(", "),
+            users,
+            `$${total}`,
+            true
+          )
+        )
+        .then((res) => {
+          setDialogOpen(false);
+          setName("");
+          setDate(new Date());
+          setTotal("");
+          setService("");
+          setComplexity("");
+          setUsers("");
+          setPlatforms([]);
+          setFeatures([]);
+        }),
     ]);
-    setDialogOpen(false);
-    setName("");
-    setDate(new Date());
-    setTotal("");
-    setService("");
-    setComplexity("");
-    setUsers("");
-    setPlatforms([]);
-    setFeatures([]);
   };
 
   const handleSearch = (event) => {
@@ -139,21 +147,21 @@ export default function ProjectManager() {
       Object.values(row).filter((option) => option !== true && option !== false)
     );
 
-    const matches = rowData.map((row) =>
-      row.map((option) =>
-        option.toLowerCase().includes(event.target.value.toLowerCase())
-      )
-    );
+    // const matches = rowData.map(row =>
+    //   row.map(option =>
+    //     option.toLowerCase().includes(event.target.value.toLowerCase())
+    //   )
+    // );
 
-    const newRows = [...rows];
-    matches.map((row, index) =>
-      row.includes(true)
-        ? (newRows[index].search = true)
-        : (newRows[index].search = false)
-    );
+    // const newRows = [...rows];
+    // matches.map((row, index) =>
+    //   row.includes(true)
+    //     ? (newRows[index].search = true)
+    //     : (newRows[index].search = false)
+    // );
 
-    setRows(newRows);
-    setPage(0);
+    // setRows(newRows);
+    // setPage(0);
   };
 
   const serviceQuestions = (
@@ -213,21 +221,18 @@ export default function ProjectManager() {
             onChange={(event) => setComplexity(event.target.value)}
           >
             <FormControlLabel
-              disabled={service === "Website"}
               classes={{ label: classes.service }}
               value="Low"
               label="Low"
               control={<Radio />}
             />
             <FormControlLabel
-              disabled={service === "Website"}
               classes={{ label: classes.service }}
               value="Medium"
               label="Medium"
               control={<Radio />}
             />
             <FormControlLabel
-              disabled={service === "Website"}
               classes={{ label: classes.service }}
               value="High"
               label="High"
@@ -258,7 +263,6 @@ export default function ProjectManager() {
             onChange={(event) => setUsers(event.target.value)}
           >
             <FormControlLabel
-              disabled={service === "Website"}
               classes={{
                 label: classes.service,
                 root: classes.users,
@@ -268,7 +272,6 @@ export default function ProjectManager() {
               control={<Radio />}
             />
             <FormControlLabel
-              disabled={service === "Website"}
               classes={{
                 label: classes.service,
                 root: classes.users,
@@ -278,7 +281,6 @@ export default function ProjectManager() {
               control={<Radio />}
             />
             <FormControlLabel
-              disabled={service === "Website"}
               classes={{
                 label: classes.service,
                 root: classes.users,
@@ -308,20 +310,18 @@ export default function ProjectManager() {
         </Grid>
         <Grid item>
           <TextField
-            placeholder="Search Project details or create a new entry"
+            placeholder="Search project details or create a new entry."
             value={search}
             onChange={handleSearch}
             style={{
               width: matchesSM ? "25em" : "35em",
               marginLeft: matchesSM ? 0 : "5em",
-              marginTop: "2em",
-              marginBottom: "2em",
             }}
             InputProps={{
               endAdornment: (
                 <InputAdornment
                   position="end"
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer " }}
                   onClick={() => setDialogOpen(true)}
                 >
                   <AddIcon color="primary" style={{ fontSize: 30 }} />
@@ -346,7 +346,7 @@ export default function ProjectManager() {
                   control={
                     <Switch
                       checked={websiteChecked}
-                      color="secondary"
+                      color="primary"
                       onChange={() => setWebsiteChecked(!websiteChecked)}
                     />
                   }
@@ -360,7 +360,7 @@ export default function ProjectManager() {
                   control={
                     <Switch
                       checked={iOSChecked}
-                      color="secondary"
+                      color="primary"
                       onChange={() => setiOSChecked(!iOSChecked)}
                     />
                   }
@@ -374,7 +374,7 @@ export default function ProjectManager() {
                   control={
                     <Switch
                       checked={androidChecked}
-                      color="secondary"
+                      color="primary"
                       onChange={() => setAndroidChecked(!androidChecked)}
                     />
                   }
@@ -384,11 +384,10 @@ export default function ProjectManager() {
               </Grid>
               <Grid item>
                 <FormControlLabel
-                  style={{ marginRight: matchesSM ? 0 : "5em" }}
                   control={
                     <Switch
                       checked={softwareChecked}
-                      color="secondary"
+                      color="primary"
                       onChange={() => setSoftwareChecked(!softwareChecked)}
                     />
                   }
@@ -398,6 +397,38 @@ export default function ProjectManager() {
               </Grid>
             </Grid>
           </FormGroup>
+        </Grid>
+        <Grid item>
+          <Grid item>
+            <Typography
+              variant="h4"
+              style={{
+                marginTop: "3em",
+                marginLeft: "3em",
+                fontFamily: "Merienda One",
+                fontWeight: 300,
+                fontSize: "1.5em",
+                color: "red",
+                marginBottom: 0
+              }}
+            >
+              Warning!
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography
+              variant="h4"
+              style={{
+                marginTop: "3em",
+                marginLeft: "3em",
+                fontFamily: "Merienda One",
+                fontWeight: 300,
+                fontSize: "1.5em",
+              }}
+            >
+              If you don't see your changes! please refresh the page!!
+            </Typography>
+          </Grid>
         </Grid>
         <Grid
           item
@@ -470,7 +501,6 @@ export default function ProjectManager() {
                       <Select
                         labelId="platforms"
                         id="platforms"
-                        disabled={service === "Website"}
                         multiple
                         style={{ width: matchesSM ? 250 : "12em" }}
                         MenuProps={{ style: { zIndex: 1302 } }}
@@ -502,7 +532,7 @@ export default function ProjectManager() {
                 >
                   <Grid item style={{ marginTop: matchesSM ? 50 : null }}>
                     <KeyboardDatePicker
-                      style={{width: matchesSM ? 250 : undefined}}
+                      style={{ width: matchesSM ? 250 : undefined }}
                       format="MM/dd/yyyy"
                       value={date}
                       onChange={(newDate) => setDate(newDate)}
@@ -533,19 +563,8 @@ export default function ProjectManager() {
                       onChange={(event) => setTotal(event.target.value)}
                     />
                   </Grid>
-                  <Grid
-                    item
-                    style={{ alignSelf: matchesSM ? "center" : "flex-end" }}
-                  >
-                    <Grid
-                      item
-                      container
-                      direction="column"
-                      style={{ marginTop: matchesSM ? 50 : "5em" }}
-                    >
-                      <Hidden smDown>{userQuestions}</Hidden>
-                    </Grid>
-                  </Grid>
+                  <Hidden smDown>{userQuestions}</Hidden>
+
                   <Grid item style={{ marginTop: matchesSM ? 50 : "5em" }}>
                     <Select
                       labelId="features"
@@ -578,7 +597,7 @@ export default function ProjectManager() {
                 <Button
                   onClick={() => setDialogOpen(false)}
                   color="primary"
-                  style={{ fontWeight: 300, marginRight: "1em" }}
+                  style={{ fontWeight: 300 }}
                 >
                   Cancel
                 </Button>
@@ -588,20 +607,14 @@ export default function ProjectManager() {
                   variant="contained"
                   className={classes.button}
                   onClick={addProject}
-                  style={{ marginLeft: "1em" }}
                   disabled={
-                    service === "Website"
-                      ? name.length === 0 ||
-                        total.length === 0 ||
-                        features.length === 0 ||
-                        features.length > 1
-                      : name.length === 0 ||
-                        total.length === 0 ||
-                        features.length === 0 ||
-                        users.length === 0 ||
-                        complexity.length === 0 ||
-                        platforms.length === 0 ||
-                        service.length === 0
+                    name.length === 0 ||
+                    total.length === 0 ||
+                    features.length === 0 ||
+                    users.length === 0 ||
+                    complexity.length === 0 ||
+                    platforms.length === 0 ||
+                    service.length === 0
                   }
                 >
                   Add Project +
